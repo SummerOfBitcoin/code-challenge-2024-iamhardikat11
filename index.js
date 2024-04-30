@@ -6,7 +6,26 @@ const output_file_name = 'output.txt';
 const mempool_path = './mempool';
 
 // Utility functions
-function Block_Header_to_Text(block_header) { return `${block_header.version} ${block_header.prevBlockHash} ${block_header.merkleRoot} ${block_header.timestamp} ${block_header.bits} ${block_header.nonce}`; }
+// function Block_Header_to_Text(block_header) { return `${block_header.version} ${block_header.prevBlockHash} ${block_header.merkleRoot} ${block_header.timestamp} ${block_header.bits} ${block_header.nonce}`; }
+function Block_Header_to_Text(block_header) {
+    const version = block_header.version.toString(16).padStart(8, '0'); // Convert version to hex with leading zeros
+    const prevBlockHash = block_header.prevBlockHash.padEnd(64, ' '); // Ensure previous block hash is 32 bytes (64 characters)
+    const merkleRoot = block_header.merkleRoot.padEnd(64, ' '); // Ensure merkle root is 32 bytes (64 characters)
+    const timestamp = block_header.timestamp.toString(16).padStart(8, '0'); // Convert timestamp to hex with leading zeros
+    const bits = block_header.bits.padStart(8, '0'); // Ensure bits is 4 bytes (8 characters)
+    const nonce = block_header.nonce.toString(16).padStart(8, '0'); // Convert nonce to hex with leading zeros
+
+    // Ensure total length is 80 bytes (160 characters)
+    const formattedString = `0x${version}`+
+                             `${prevBlockHash}`+
+                             `${merkleRoot}` +
+                             `0x${timestamp}`+
+                             `${bits}` +
+                             `0x${nonce}`;
+
+    return formattedString;
+}
+
 
 function Transaction_to_Text(trs) { return JSON.stringify(trs); }
 
